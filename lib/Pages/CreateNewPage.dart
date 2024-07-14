@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thespy/Components/OptionInput.dart';
 
 class CreateNew extends StatefulWidget {
   const CreateNew({super.key});
@@ -24,8 +24,6 @@ class _CreateNewState extends State<CreateNew> {
 
   Map<String, dynamic> data = {};
 
-  Future loadData() async {
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,17 +57,16 @@ class _CreateNewState extends State<CreateNew> {
                   child: ListView.builder(
                     itemCount: option_controllers.length + 1, // plus one for the done button
                     itemBuilder: (context, index) {
-                      if (index < option_controllers.length) {
+                      if (index < option_controllers.length) { // the text fields
                         return OptionInput(
-                          num: index,
+                          hint: "Option",
+                          index: index,
                           controller: option_controllers[index],
-                          callback: () {
-                            setState(() {
-                              option_controllers.removeAt(index);
-                            });
-                          },
+                          callback: () => setState(() {
+                            option_controllers.removeAt(index);
+                          }),
                         );
-                      } else {
+                      } else { // the done button
                         return Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: 100),
@@ -144,46 +141,6 @@ class _CreateNewState extends State<CreateNew> {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class OptionInput extends StatelessWidget {
-  final int num;
-  final TextEditingController controller;
-  final void Function() callback;
-  const OptionInput(
-      {super.key,
-      required this.num,
-      required this.controller,
-      required this.callback});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: "Option ${num + 1}:",
-          enabledBorder: const OutlineInputBorder(),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          suffixIcon: num >= 3
-              ? ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        const WidgetStatePropertyAll(Colors.transparent),
-                    elevation: const WidgetStatePropertyAll(0),
-                    foregroundColor:
-                        WidgetStateProperty.all(Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () => callback(),
-                  child: const Icon(Icons.remove_outlined),
-                )
-              : null,
         ),
       ),
     );

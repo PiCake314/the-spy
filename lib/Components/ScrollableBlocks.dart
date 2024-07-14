@@ -68,13 +68,13 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                         padding: const EdgeInsets.all(15),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: WidgetStateProperty.all(
+                            foregroundColor: WidgetStatePropertyAll(
                                 Theme.of(context).primaryColor),
-                            shape: WidgetStateProperty.all(
+                            shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            minimumSize: WidgetStateProperty.all(
+                            minimumSize: WidgetStatePropertyAll(
                               Size(
                                 MediaQuery.of(context).size.width / 2 - 30,
                                 MediaQuery.of(context).size.width / 2 - 30,

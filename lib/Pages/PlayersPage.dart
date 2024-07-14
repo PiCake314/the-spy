@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thespy/Components/OptionInput.dart';
 
 
 class PlayersPage extends StatefulWidget {
@@ -11,12 +11,14 @@ class PlayersPage extends StatefulWidget {
 }
 
 class _PlayersPageState extends State<PlayersPage> {
-  List<String> players = [];
+  List<TextEditingController> player_controllers = [];
 
   Future<void> loadPlayers() async {
     final prefs = await SharedPreferences.getInstance();
 
-    players = prefs.getStringList("players") ?? [];
+    final players = prefs.getStringList("players") ?? [];
+
+    player_controllers = players.map((player) => TextEditingController(text: player)).toList();
   }
 
   @override
@@ -30,12 +32,21 @@ class _PlayersPageState extends State<PlayersPage> {
           }
       
           return ListView.builder(
-            itemCount: players.length +1, // plus one for the add player button
+            itemCount: player_controllers.length +1, // plus one for the add player button
             itemBuilder: (context, index) {
-              return ListTile(
-                title: const Text("Player"),
-                subtitle: const Text("Role"),
-              );
+              if (index < player_controllers.length){
+                return OptionInput(
+                  hint: "Player",
+                  index: index,
+                  controller: player_controllers[index],
+                  callback: () => setState(() {
+                    player_controllers.removeAt(index);
+                  }),
+                );
+              }
+              else{
+
+              }
             },
           );
         },
