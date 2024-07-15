@@ -24,6 +24,15 @@ class _CreateNewState extends State<CreateNew> {
 
   Map<String, dynamic> data = {};
 
+  void errMsg(final String label){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(label),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,77 +76,72 @@ class _CreateNewState extends State<CreateNew> {
                           }),
                         );
                       } else { // the done button
-                        return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 100),
-                          child: ElevatedButton(
-                              child: const Text("Done!",
-                                  style: TextStyle(fontSize: 24)),
-                              style: ButtonStyle(
-                                minimumSize: const WidgetStatePropertyAll(
-                                    Size(0, 70)),
-                                foregroundColor: WidgetStateProperty.all(
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 70, // 20 plus button width
+                              child: IconButton(
+                                icon: const Icon(Icons.add_circle_outline_sharp, size: 50,),
+                                style: ButtonStyle(
+                                  foregroundColor: WidgetStateProperty.all(
                                     Theme.of(context).primaryColor),
+                                ),
+                                onPressed: () => setState(() {
+                                  option_controllers.add(TextEditingController());
+                                }),
                               ),
-                              onPressed: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-
-                                final data_string = prefs.getString("data");
-
-                                data = data_string != null
-                                  ? Map<String, dynamic>.from(jsonDecode(data_string))
-                                  : <String, Object>{};
-
-                                // store the data
-                                data["titles"] ??= [];
-                                data["titles"].add(title_controller.text.toUpperCase());
-                                data["options"] ??= [];
-                                data["options"].add(option_controllers
-                                    .map((e) => e.text.toUpperCase())
-                                    .toList());
-
-                                final value = jsonEncode(data);
-                                prefs.setString("data", value);
-
-                                if (context.mounted){
-                                  Navigator.of(context).pop();
-                                }
-                              }),
+                            ),
+                          ],
                         );
                       }
                     },
-
-                    // children: [
-                    //   const Center(
-                    //     child: Text(
-                    //       "Add the options",
-                    //       style: TextStyle(fontSize: 32),
-                    //     ),
-                    //   ),
-                    //   ...options,
-                    //     ),
-                    //   )
-                    // ],
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: ElevatedButton(
-                      child: const Text(
-                        "Add another option",
-                        style: TextStyle(fontSize: 22),
-                      ),
-                      style: ButtonStyle(
-                        minimumSize:
-                            const WidgetStatePropertyAll(Size(300, 70)),
-                        foregroundColor: WidgetStateProperty.all(
-                            Theme.of(context).primaryColor),
-                      ),
-                      onPressed: () => setState(() {
-                        option_controllers.add(TextEditingController());
-                      }),
-                    ))
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: ElevatedButton(
+                    child: const Text(
+                      "Done",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    style: ButtonStyle(
+                      minimumSize:
+                          const WidgetStatePropertyAll(Size(300, 70)),
+                      foregroundColor: WidgetStateProperty.all(
+                          Theme.of(context).primaryColor),
+                    ),
+                    onPressed: () async {
+                      if(title_controller.text.trim().isEmpty || option_controllers.any((element) => element.text.isEmpty)){
+                        return errMsg("Please fill-in all the fields.");
+                      }
+
+                      final prefs =
+                          await SharedPreferences.getInstance();
+
+                      final data_string = prefs.getString("data");
+
+                      data = data_string != null
+                        ? Map<String, dynamic>.from(jsonDecode(data_string))
+                        : <String, Object>{};
+
+                      // store the data
+                      data["titles"] ??= [];
+                      data["titles"].add(title_controller.text.trim().toUpperCase());
+                      data["options"] ??= [];
+                      data["options"].add(option_controllers
+                          .map((e) => e.text.trim().toUpperCase())
+                          .toList());
+
+                      final value = jsonEncode(data);
+                      prefs.setString("data", value);
+
+                      if (context.mounted){
+                        Navigator.of(context).pop();
+                      }
+                    }
+                  ),
+                ),
               ],
             ),
           ],
