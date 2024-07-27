@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thespy/Components/TitleButton.dart';
+import 'package:thespy/Pages/GameOptionsPage.dart';
 import 'package:thespy/Pages/GamePage.dart';
 import 'package:thespy/Pages/SettingsPage.dart';
 
-void main() { runApp(const MyApp()); }
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,18 +16,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "The Spy!",
-      home: const TitlePage(), 
+      home: const TitlePage(),
       theme: ThemeData(
-        primaryColor: Colors.black54,
-        focusColor: Colors.blueGrey,
-        scaffoldBackgroundColor: Colors.blueGrey,
-        brightness: Brightness.light,
-        fontFamily: GoogleFonts.permanentMarker().fontFamily,
-        textTheme: const TextTheme(
-          titleMedium: TextStyle(color: Colors.black),
-          titleLarge: TextStyle(color: Colors.black),
-        )
-      ),
+          primaryColor: Colors.black54,
+          focusColor: Colors.blueGrey,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 153, 190, 208),
+          brightness: Brightness.light,
+          fontFamily: GoogleFonts.permanentMarker().fontFamily,
+          textTheme: const TextTheme(
+            titleMedium: TextStyle(color: Colors.black),
+            titleLarge: TextStyle(color: Colors.black),
+          )),
     );
   }
 }
@@ -43,9 +45,12 @@ class TitlePage extends StatelessWidget {
               width: 300,
               child: Image.asset("assets/logo.png"),
               padding: const EdgeInsets.all(8),
-            ), 
-            const Padding(child: Divider(), padding: EdgeInsets.all(32),),
-            const TitleButton(text: "Start Game!", page: GamePage()),
+            ),
+            const Padding(
+              child: Divider(),
+              padding: EdgeInsets.all(32),
+            ),
+            const TitleButton(text: "Start Game!", page: GameOptionsPage()),
             const TitleButton(text: "Settings", page: SettingsPage()),
           ],
         ),

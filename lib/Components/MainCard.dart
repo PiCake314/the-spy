@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,26 +17,37 @@ class MainCard extends StatelessWidget {
       required this.settings,
       required this.callback});
 
-  ElevatedButton button(BuildContext context) => ElevatedButton(
-        child: Center(
+  ElevatedButton button(BuildContext context) => 
+    ElevatedButton(
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.contain,
           child: Text(
             game_data.title,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 28),
           ),
         ),
-        style: ElevatedButton.styleFrom(
-          shape: const LinearBorder(),
-          minimumSize: Size(
-            MediaQuery.of(context).size.width / 2 - 30,
-            MediaQuery.of(context).size.width / 2 - 30,
-          ),
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        onPressed: () {
-          if(!settings) // main page
-            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PlayersPage()));
-        },
-      );
+        maximumSize: Size(
+          MediaQuery.of(context).size.width / 2 - 30,
+          MediaQuery.of(context).size.width / 2 - 30,
+        ),
+      ),
+      onPressed: () {
+        if(!settings) // main page
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => PlayersPage(
+              title: game_data.title,
+              topic: game_data.options[Random().nextInt(game_data.options.length)],
+            )),
+          );
+      },
+    );
 
   @override
   Widget build(BuildContext context) {

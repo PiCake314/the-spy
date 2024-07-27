@@ -112,9 +112,11 @@ class _CreateNewState extends State<CreateNew> {
                           Theme.of(context).primaryColor),
                     ),
                     onPressed: () async {
-                      if(title_controller.text.trim().isEmpty || option_controllers.any((element) => element.text.isEmpty)){
+                      if(title_controller.text.trim().isEmpty || option_controllers.any((element) => element.text.isEmpty))
                         return errMsg("Please fill-in all the fields.");
-                      }
+
+                      if(title_controller.text.trim().length > 10)
+                        return errMsg("Category name too long.");
 
                       final prefs =
                           await SharedPreferences.getInstance();

@@ -22,7 +22,7 @@ class TitleButton extends StatelessWidget {
             // maximumSize: WidgetStateProperty.all(const Size(300, 80)),
           ),
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => page, settings: const RouteSettings(name: "/home")));
           }),
     );
   }
