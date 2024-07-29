@@ -14,8 +14,7 @@ class _PlayerFieldsState extends State<PlayerFields> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.65,
+    return Expanded(
       child: ListView.builder(
         itemCount: widget.player_controllers.length +1, // plus one for the add player button
         itemBuilder: (context, index) {

@@ -6,7 +6,8 @@ import 'package:thespy/Pages/GamePage.dart';
 class PlayersPage extends StatefulWidget {
   final String title;
   final String topic;
-  const PlayersPage({super.key, required this.title, required this.topic});
+  final List<String> topic_list;
+  const PlayersPage({super.key, required this.title, required this.topic, required this.topic_list});
 
   @override
   State<PlayersPage> createState() => _PlayersPageState();
@@ -74,31 +75,35 @@ class _PlayersPageState extends State<PlayersPage> {
                     if (player_controllers.any((e) => e.text.isEmpty)) {
                       return errMsg("Please fill-in all the fields.");
                     }
-
+              
                     final prefs = await SharedPreferences.getInstance();
-
+              
                     final players =
                         player_controllers.map((e) => e.text.trim()).toList();
                     prefs.setStringList(
                       "players",
                       players,
                     );
-
+              
                     if (context.mounted)
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (_) => GameLogic(
-                                  title: widget.title,
-                                  topic: widget.topic,
-                                  players: players,
-                                )),
+                          builder: (_) => GameLogic(
+                            title: widget.title,
+                            topic: widget.topic,
+                            topic_list: widget.topic_list,
+                            players: players,
+                          ),
+                        ),
                       );
-
+              
                     // if (context.mounted){
                     //   Navigator.of(context).pop();
                     // }
                   }),
             ),
+
+            const SizedBox(height: 40,)
           ],
         ),
       ),

@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thespy/GameData.dart';
-import 'package:thespy/Pages/PlayersPage.dart';
+import 'package:thespy/Pages/AddPlayersPage.dart';
 
 class MainCard extends StatelessWidget {
-  final GameData game_data;
+  final GameSaveData game_data;
   final bool settings;
   final void Function() callback;
   const MainCard(
@@ -17,37 +18,39 @@ class MainCard extends StatelessWidget {
       required this.settings,
       required this.callback});
 
-  ElevatedButton button(BuildContext context) => 
-    ElevatedButton(
-      child: Center(
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Text(
-            game_data.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 28),
+  ElevatedButton button(BuildContext context) => ElevatedButton(
+        child: Center(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Text(
+              game_data.title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 28),
+            ),
           ),
         ),
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          maximumSize: Size(
+            MediaQuery.of(context).size.width / 2 - 30,
+            MediaQuery.of(context).size.width / 2 - 30,
+          ),
         ),
-        maximumSize: Size(
-          MediaQuery.of(context).size.width / 2 - 30,
-          MediaQuery.of(context).size.width / 2 - 30,
-        ),
-      ),
-      onPressed: () {
-        if(!settings) // main page
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => PlayersPage(
-              title: game_data.title,
-              topic: game_data.options[Random().nextInt(game_data.options.length)],
-            )),
-          );
-      },
-    );
+        onPressed: () {
+          if (!settings) // main page
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) => PlayersPage(
+                        title: game_data.title,
+                        topic: game_data.topic_list[
+                            Random().nextInt(game_data.topic_list.length)],
+                        topic_list: game_data.topic_list,
+                      )),
+            );
+        },
+      );
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,6 @@ import 'package:thespy/Components/MainCard.dart';
 import 'package:thespy/GameData.dart';
 import 'package:thespy/Pages/CreateNewPage.dart';
 
-
 class ScrollableBlocks extends StatefulWidget {
   final bool settings;
   const ScrollableBlocks({super.key, required this.settings});
@@ -16,15 +15,15 @@ class ScrollableBlocks extends StatefulWidget {
 }
 
 class _ScrollableBlocksState extends State<ScrollableBlocks> {
-  List<GameData> cards = []; 
+  List<GameSaveData> cards = [];
 
- // used for caching the data
+  // used for caching the data
   Future<void> loadData() async {
     final prefs = await SharedPreferences.getInstance();
 
     final data_string = prefs.getString("data");
     final data =
-      data_string != null ? jsonDecode(data_string) : <String, dynamic>{};
+        data_string != null ? jsonDecode(data_string) : <String, dynamic>{};
 
     // data["titles"] = [];
     // data["options"] = [];
@@ -34,14 +33,12 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
     if (data_string != null) {
       // debugPrint(data_string);
 
-      cards = List<GameData>.generate(
-        data["titles"].length,
-        (index) => GameData(
-          title: data["titles"][index],
-          options: List<String>.from(data["options"][index]),
-        )
-      );
-
+      cards = List<GameSaveData>.generate(
+          data["titles"].length,
+          (index) => GameSaveData(
+                title: data["titles"][index],
+                topic_list: List<String>.from(data["options"][index]),
+              ));
     }
   }
 
@@ -87,11 +84,9 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                               MaterialPageRoute(
                                 builder: (_) => const CreateNew(),
                               ),
-                            )
-                            .then((_){
-                              setState((){}); // refresh the page
+                            ).then((_) {
+                              setState(() {}); // refresh the page
                             });
-                            
                           },
                           child: const Center(
                             child: Text(
@@ -102,10 +97,13 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                           ),
                         ),
                       ),
-                      if (cards.isNotEmpty) MainCard(game_data: cards[0], settings: widget.settings, callback: () => setState(() {})),
+                      if (cards.isNotEmpty)
+                        MainCard(
+                            game_data: cards[0],
+                            settings: widget.settings,
+                            callback: () => setState(() {})),
                     ],
                   ),
-
 
                 // disgusting, refactor.
                 for (int i = widget.settings ? 1 : 0;
@@ -114,29 +112,53 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      MainCard(game_data: cards[i], settings: widget.settings, callback: () => setState(() {})),
-                      MainCard(game_data: cards[i + 1], settings: widget.settings, callback: () => setState(() {})),
+                      MainCard(
+                          game_data: cards[i],
+                          settings: widget.settings,
+                          callback: () => setState(() {})),
+                      MainCard(
+                          game_data: cards[i + 1],
+                          settings: widget.settings,
+                          callback: () => setState(() {})),
                     ],
                   ),
-                
+
                 if (!widget.settings && cards.length == 1)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [MainCard(game_data: cards.first, settings: widget.settings, callback: () => setState(() {}))],
+                    children: [
+                      MainCard(
+                          game_data: cards.first,
+                          settings: widget.settings,
+                          callback: () => setState(() {}))
+                    ],
                   ),
 
-                if (!widget.settings && cards.length != 1 && cards.length % 2 == 1)
+                if (!widget.settings &&
+                    cards.length != 1 &&
+                    cards.length % 2 == 1)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [MainCard(game_data: cards.last, settings: widget.settings, callback: () => setState(() {}))],
+                    children: [
+                      MainCard(
+                          game_data: cards.last,
+                          settings: widget.settings,
+                          callback: () => setState(() {}))
+                    ],
                   ),
-                
-                if(widget.settings && cards.isNotEmpty && cards.length % 2 == 0) // 1 element
+
+                if (widget.settings &&
+                    cards.isNotEmpty &&
+                    cards.length % 2 == 0) // 1 element
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [MainCard(game_data: cards.last, settings: widget.settings, callback: () => setState(() {}))],
+                    children: [
+                      MainCard(
+                          game_data: cards.last,
+                          settings: widget.settings,
+                          callback: () => setState(() {}))
+                    ],
                   )
-
               ],
             ),
           );

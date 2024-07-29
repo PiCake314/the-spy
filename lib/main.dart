@@ -18,15 +18,16 @@ class MyApp extends StatelessWidget {
       title: "The Spy!",
       home: const TitlePage(),
       theme: ThemeData(
-          primaryColor: Colors.black54,
-          focusColor: Colors.blueGrey,
-          scaffoldBackgroundColor: const Color.fromARGB(255, 153, 190, 208),
-          brightness: Brightness.light,
-          fontFamily: GoogleFonts.permanentMarker().fontFamily,
-          textTheme: const TextTheme(
-            titleMedium: TextStyle(color: Colors.black),
-            titleLarge: TextStyle(color: Colors.black),
-          )),
+        primaryColor: Colors.black54,
+        focusColor: Colors.blueGrey,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 153, 190, 208),
+        brightness: Brightness.light,
+        fontFamily: GoogleFonts.bebasNeue().fontFamily, // GoogleFonts.permanentMarker().fontFamily
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(color: Colors.black),
+          titleLarge: TextStyle(color: Colors.black),
+        ),
+      ),
     );
   }
 }
