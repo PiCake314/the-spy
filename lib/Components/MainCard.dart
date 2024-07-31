@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thespy/GameData.dart';
 import 'package:thespy/Pages/AddPlayersPage.dart';
+import 'package:thespy/Pages/CreateNewPage.dart';
 
 class MainCard extends StatelessWidget {
   final GameSaveData game_data;
@@ -41,13 +42,11 @@ class MainCard extends StatelessWidget {
         onPressed: () {
           if (!settings) // main page
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (_) => PlayersPage(
-                        title: game_data.title,
-                        topic: game_data.topic_list[
-                            Random().nextInt(game_data.topic_list.length)],
-                        topic_list: game_data.topic_list,
-                      )),
+              MaterialPageRoute(builder: (_) => PlayersPage(
+                title: game_data.title,
+                topic: game_data.topic_list[Random().nextInt(game_data.topic_list.length)],
+                topic_list: game_data.topic_list,
+              )),
             );
         },
       );
@@ -64,19 +63,23 @@ class MainCard extends StatelessWidget {
                   child: const Text("Modify"),
                   trailingIcon: Icons.edit_outlined,
                   onPressed: () async {
-                    // final prefs = await SharedPreferences.getInstance();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreateNew(
+                          modifying: true,
+                          title: game_data.title,
+                          topics: game_data.topic_list,
+                        ),
+                      ),
+                    );
 
-                    // final data_string = prefs.getString("data");
-                    // final data = data_string != null
-                    //     ? jsonDecode(data_string)
-                    //     : <String, dynamic>{};
-
-                    // !go to the modify page
+                    callback();
+                    if (context.mounted) Navigator.of(context).pop();
                   },
                 ),
                 CupertinoContextMenuAction(
-                  child:
-                      const Text("Delete", style: TextStyle(color: Colors.red)),
+                  child: const Text("Delete", style: TextStyle(color: Colors.red)),
                   isDefaultAction: true,
                   trailingIcon: Icons.delete_outline,
                   onPressed: () async {

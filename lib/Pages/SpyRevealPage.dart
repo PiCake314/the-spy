@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:thespy/GameData.dart';
 import 'package:thespy/Pages/TestingPage.dart';
+import 'package:thespy/SharedData.dart';
 
 class SpyReveal extends StatefulWidget {
   final GameInfo game_info;
@@ -25,20 +26,24 @@ class _SpyRevealState extends State<SpyReveal> {
   int opacity = 0;
 
   Future<void> showSpy() async {
-    final limit = Random().nextInt(20) + 10;
+    final random = Random();
+    final limit = random.nextInt(20) + 10 + (10 * (widget.game_info.players.length) / 5);
     for (int i = 0; i < limit; ++i) {
       await Future.delayed(
-          const Duration(milliseconds: 100), // speeding effect
-          () => setState(() => name = widget.game_info.players[Random().nextInt(widget.game_info.players.length)]));
+        const Duration(milliseconds: 100),
+        () => setState(() => name = widget.game_info
+            .players[random.nextInt(widget.game_info.players.length)]),
+      );
     }
     // this is to set the name to the spy
     await Future.delayed(
-        const Duration(milliseconds: 100),
-        () => setState(() {
-              name = widget.game_info.spy;
-              bottom = 150;
-              opacity = 1;
-            }));
+      const Duration(milliseconds: 100),
+      () => setState(() {
+          name = widget.game_info.spy;
+          bottom = 150;
+          opacity = 1;
+        }),
+      );
 
     // change position
   }
@@ -55,6 +60,14 @@ class _SpyRevealState extends State<SpyReveal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.sensor_door_outlined),
+          onPressed: () => showExitModal(context),
+        ),
+        forceMaterialTransparency: true,
+      ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -90,8 +103,7 @@ class _SpyRevealState extends State<SpyReveal> {
                 style: const ButtonStyle(
                     minimumSize: WidgetStatePropertyAll(Size(300, 70))),
                 onPressed: () => Navigator.of(context).push(PageRouteBuilder(
-                  transitionsBuilder:
-                      (_, animation, __, child) {
+                  transitionsBuilder: (_, animation, __, child) {
                     const begin = 0.0;
                     const end = 1.0;
                     const curve = Curves.ease;

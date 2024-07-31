@@ -5,26 +5,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thespy/Components/OptionInput.dart';
 
 class CreateNew extends StatefulWidget {
-  const CreateNew({super.key});
+  final bool modifying;
+  final String title;
+  final List<String> topics;
+
+  const CreateNew({super.key, required this.modifying, this.title = "", this.topics = const []});
 
   @override
   State<CreateNew> createState() => _CreateNewState();
 }
 
 class _CreateNewState extends State<CreateNew> {
-  // var options =
-  //     List.generate(3, (ind) => OptionInput(num: ind, callback: (_) {}));
-  int num_option = 3;
   final title_controller = TextEditingController();
-  List<TextEditingController> option_controllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+  late List<TextEditingController> option_controllers;
+
 
   Map<String, dynamic> data = {};
 
-  void errMsg(final String label){
+  void errMsg(final String label) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(label),
@@ -33,6 +31,21 @@ class _CreateNewState extends State<CreateNew> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+    if(widget.modifying) {
+      assert(widget.topics.isNotEmpty);
+      assert(widget.title.isNotEmpty);
+
+      title_controller.text = widget.title;
+      option_controllers = widget.topics.map((e) => TextEditingController(text: e)).toList();
+    } else {
+      option_controllers = List.generate(3, (index) => TextEditingController());
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +54,9 @@ class _CreateNewState extends State<CreateNew> {
         padding: const EdgeInsets.only(top: 50),
         child: Column(
           children: [
-            const Text(
-              "Creating Topic",
-              style: TextStyle(fontSize: 32),
+            Text(
+              "${widget.modifying ? "Modifying" : "Creating"} Topic",
+              style: const TextStyle(fontSize: 32),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -64,9 +77,11 @@ class _CreateNewState extends State<CreateNew> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.65,
                   child: ListView.builder(
-                    itemCount: option_controllers.length + 1, // plus one for the done button
+                    itemCount: option_controllers.length +
+                        1, // plus one for the done button
                     itemBuilder: (context, index) {
-                      if (index < option_controllers.length) { // the text fields
+                      if (index < option_controllers.length) {
+                        // the text fields
                         return OptionInput(
                           hint: "Option",
                           index: index,
@@ -75,20 +90,25 @@ class _CreateNewState extends State<CreateNew> {
                             option_controllers.removeAt(index);
                           }),
                         );
-                      } else { // the done button
+                      } else {
+                        // the done button
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
                               width: 70, // 20 plus button width
                               child: IconButton(
-                                icon: const Icon(Icons.add_circle_outline_sharp, size: 50,),
+                                icon: const Icon(
+                                  Icons.add_circle_outline_sharp,
+                                  size: 50,
+                                ),
                                 style: ButtonStyle(
                                   foregroundColor: WidgetStateProperty.all(
-                                    Theme.of(context).primaryColor),
+                                      Theme.of(context).primaryColor),
                                 ),
                                 onPressed: () => setState(() {
-                                  option_controllers.add(TextEditingController());
+                                  option_controllers
+                                      .add(TextEditingController());
                                 }),
                               ),
                             ),
@@ -101,48 +121,57 @@ class _CreateNewState extends State<CreateNew> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: ElevatedButton(
-                    child: const Text(
-                      "Done",
-                      style: TextStyle(fontSize: 22),
-                    ),
-                    style: ButtonStyle(
-                      minimumSize:
-                          const WidgetStatePropertyAll(Size(300, 70)),
-                      foregroundColor: WidgetStateProperty.all(
-                          Theme.of(context).primaryColor),
-                    ),
-                    onPressed: () async {
-                      if(title_controller.text.trim().isEmpty || option_controllers.any((element) => element.text.isEmpty))
-                        return errMsg("Please fill-in all the fields.");
+                      child: const Text(
+                        "Done",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      style: ButtonStyle(
+                        minimumSize:
+                            const WidgetStatePropertyAll(Size(300, 70)),
+                        foregroundColor: WidgetStateProperty.all(
+                            Theme.of(context).primaryColor),
+                      ),
+                      onPressed: () async {
+                        if (title_controller.text.trim().isEmpty ||
+                            option_controllers
+                                .any((element) => element.text.isEmpty))
+                          return errMsg("Please fill-in all the fields.");
 
-                      if(title_controller.text.trim().length > 10)
-                        return errMsg("Category name too long.");
+                        if (option_controllers.map((e) => e.text.trim().toUpperCase()).toSet().length != option_controllers.length)
+                          return errMsg("Options must be unique.");
 
-                      final prefs =
-                          await SharedPreferences.getInstance();
+                        if (title_controller.text.trim().length > 10)
+                          return errMsg("Category name too long.");
 
-                      final data_string = prefs.getString("data");
+                        final prefs = await SharedPreferences.getInstance();
 
-                      data = data_string != null
-                        ? Map<String, dynamic>.from(jsonDecode(data_string))
-                        : <String, Object>{};
+                        final data_string = prefs.getString("data");
 
-                      // store the data
-                      data["titles"] ??= [];
-                      data["titles"].add(title_controller.text.trim().toUpperCase());
-                      data["options"] ??= [];
-                      data["options"].add(option_controllers
-                          .map((e) => e.text.trim().toUpperCase())
-                          .toList());
+                        data = data_string != null
+                            ? Map<String, dynamic>.from(jsonDecode(data_string))
+                            : <String, Object>{};
 
-                      final value = jsonEncode(data);
-                      prefs.setString("data", value);
+                        // store the data
+                        data["titles"] ??= [];
 
-                      if (context.mounted){
-                        Navigator.of(context).pop();
-                      }
-                    }
-                  ),
+                        final int index = data["titles"].indexOf(widget.title);
+
+                        data["titles"][index] = title_controller.text.trim().toUpperCase();
+
+                        data["options"] ??= [];
+                        data["options"][index] = option_controllers.map((e) => e.text.trim().toUpperCase()).toList();
+                        // data["options"].add(
+                        //     option_controllers.map((e) => e.text.trim().toUpperCase())
+                        //     .toList(),
+                        // );
+
+                        final value = jsonEncode(data);
+                        prefs.setString("data", value);
+
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }),
                 ),
               ],
             ),

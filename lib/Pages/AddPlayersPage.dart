@@ -72,9 +72,14 @@ class _PlayersPageState extends State<PlayersPage> {
                         WidgetStateProperty.all(Theme.of(context).primaryColor),
                   ),
                   onPressed: () async {
-                    if (player_controllers.any((e) => e.text.isEmpty)) {
+                    if(player_controllers.any((e) => e.text.isEmpty))
                       return errMsg("Please fill-in all the fields.");
-                    }
+
+                    if (player_controllers
+                        .map((e) => e.text.trim().toUpperCase())
+                        .toSet()
+                        .length != player_controllers.length)
+                      return errMsg("Players must be unique.");
               
                     final prefs = await SharedPreferences.getInstance();
               
@@ -94,6 +99,7 @@ class _PlayersPageState extends State<PlayersPage> {
                             topic_list: widget.topic_list,
                             players: players,
                           ),
+                          settings: const RouteSettings(name: "/game"),
                         ),
                       );
               

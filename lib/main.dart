@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "The Spy!",
-      home: const TitlePage(),
+      initialRoute: "/main_menu",
+      // home: const TitlePage(),
+      routes: { "/main_menu": (context) => const TitlePage() },
       theme: ThemeData(
         primaryColor: Colors.black54,
         focusColor: Colors.blueGrey,
@@ -44,7 +46,7 @@ class TitlePage extends StatelessWidget {
           children: [
             Container(
               width: 300,
-              child: Image.asset("assets/logo.png"),
+              child: Image.asset("assets/main_menu.png"),
               padding: const EdgeInsets.all(8),
             ),
             const Padding(

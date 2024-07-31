@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:thespy/GameData.dart';
 import 'package:thespy/Pages/ResultsPage.dart';
+import 'package:thespy/SharedData.dart';
 
 
 
@@ -46,6 +47,15 @@ class _TestingPageState extends State<TestingPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.sensor_door_outlined),
+        onPressed: () => showExitModal(context),
+      ),
+      forceMaterialTransparency: true,
+    ),
+    extendBodyBehindAppBar: true,
+
     body: Column(
       children: [
         Padding(

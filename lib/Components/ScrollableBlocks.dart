@@ -81,7 +81,7 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const CreateNew(),
+                                builder: (_) => const CreateNew(modifying: false),
                               ),
                             ).then((_) {
                               setState(() {}); // refresh the page
@@ -98,9 +98,10 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                       ),
                       if (cards.isNotEmpty)
                         MainCard(
-                            game_data: cards[0],
-                            settings: widget.settings,
-                            callback: () => setState(() {})),
+                          game_data: cards[0],
+                          settings: widget.settings,
+                          callback: () => setState(() {}),
+                        ),
                     ],
                   ),
 
@@ -112,13 +113,16 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MainCard(
-                          game_data: cards[i],
-                          settings: widget.settings,
-                          callback: () => setState(() {})),
+                        game_data: cards[i],
+                        settings: widget.settings,
+                        callback: () => setState(() {}),
+                      ),
+
                       MainCard(
-                          game_data: cards[i + 1],
-                          settings: widget.settings,
-                          callback: () => setState(() {})),
+                        game_data: cards[i + 1],
+                        settings: widget.settings,
+                        callback: () => setState(() {}),
+                      ),
                     ],
                   ),
 
@@ -127,9 +131,10 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       MainCard(
-                          game_data: cards.first,
-                          settings: widget.settings,
-                          callback: () => setState(() {}))
+                        game_data: cards.first,
+                        settings: widget.settings,
+                        callback: () => setState(() {}),
+                      )
                     ],
                   ),
 
@@ -140,9 +145,10 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       MainCard(
-                          game_data: cards.last,
-                          settings: widget.settings,
-                          callback: () => setState(() {}))
+                        game_data: cards.last,
+                        settings: widget.settings,
+                        callback: () => setState(() {}),
+                      )
                     ],
                   ),
 
@@ -153,9 +159,10 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       MainCard(
-                          game_data: cards.last,
-                          settings: widget.settings,
-                          callback: () => setState(() {}))
+                        game_data: cards.last,
+                        settings: widget.settings,
+                        callback: () => setState(() {}),
+                      )
                     ],
                   )
               ],

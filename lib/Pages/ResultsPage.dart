@@ -32,6 +32,14 @@ class ResultsPage extends StatelessWidget {
 
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.sensor_door_outlined),
+          onPressed: () => showExitModal(context),
+        ),
+        forceMaterialTransparency: true,
+      ),
+      extendBodyBehindAppBar: true,
       body: Column(
         children: [
           const Padding(
@@ -54,6 +62,23 @@ class ResultsPage extends StatelessWidget {
                 );
               }
             )
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(bottom: 100),
+            child: ElevatedButton(
+              child: const Text("Play again", style: TextStyle(fontSize: 32)),
+              style: ButtonStyle(
+                padding: const WidgetStatePropertyAll(EdgeInsets.all(20)),
+                minimumSize: const WidgetStatePropertyAll(Size(300, 70)),
+                foregroundColor: WidgetStateProperty.all(
+                    Theme.of(context).primaryColor),
+              ),
+
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.settings.name == "/home");
+              },
+            ),
           ),
         ],
       ),

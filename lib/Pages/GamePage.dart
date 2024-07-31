@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:thespy/GameData.dart';
 import 'package:thespy/Pages/VotingPage.dart';
+import 'package:thespy/SharedData.dart';
 
 
 class GameLogic extends StatefulWidget {
@@ -70,6 +71,15 @@ class GameLogicState extends State<GameLogic> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.sensor_door_outlined),
+            onPressed: () => showExitModal(context),
+          ),
+          forceMaterialTransparency: true,
+        ),
+        extendBodyBehindAppBar: true,
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +225,7 @@ class GameLogicState extends State<GameLogic> {
 
                   }),
                 ),
-              )
+              ),
             ],
           ),
         ),
