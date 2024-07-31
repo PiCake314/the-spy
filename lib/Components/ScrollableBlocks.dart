@@ -31,14 +31,13 @@ class _ScrollableBlocksState extends State<ScrollableBlocks> {
     // prefs.setString("data", jsonEncode(data));
 
     if (data_string != null) {
-      // debugPrint(data_string);
-
       cards = List<GameSaveData>.generate(
-          data["titles"].length,
-          (index) => GameSaveData(
-                title: data["titles"][index],
-                topic_list: List<String>.from(data["options"][index]),
-              ));
+        data["titles"].length,
+        (index) => GameSaveData(
+          title: data["titles"][index],
+          topic_list: List<String>.from(data["options"][index]),
+        ),
+      );
     }
   }
 

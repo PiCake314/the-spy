@@ -89,8 +89,7 @@ class GameLogicState extends State<GameLogic> {
                   ),
                 ),
               ),
-      
-      
+
               !start_game ? // before starting the game
                 Flexible(
                   flex: 3,
@@ -99,7 +98,7 @@ class GameLogicState extends State<GameLogic> {
                     child: Text(
                       getText(),
                       style: TextStyle(fontSize: 26, color: Colors.blueGrey.shade900),
-                      textAlign: TextAlign.center, 
+                      textAlign: TextAlign.center,
                     )
                   )),
                 )
@@ -116,11 +115,11 @@ class GameLogicState extends State<GameLogic> {
                             style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                           ),
                         const TextSpan(text: ", ask "),
-      
+
                         TextSpan(text: widget.players[answerer_ind],
                           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
-      
+
                         const TextSpan(text: "\na question related to the topic.\nPick your question wisely so that the spy doesn't know the topic."),
                       ],
                       style: TextStyle(fontSize: 26, color: Colors.blueGrey.shade900),
@@ -129,10 +128,10 @@ class GameLogicState extends State<GameLogic> {
                   ),
                 )),
               ),
-      
+
               // Flexible(child: child)
-      
-      
+
+
               Flexible(
                 flex: 1,
                 child: ElevatedButton(
@@ -143,14 +142,14 @@ class GameLogicState extends State<GameLogic> {
                     foregroundColor: WidgetStateProperty.all(
                         Theme.of(context).primaryColor),
                   ),
-                
+
                   onPressed: () => setState(() {
-      
+
                     switch (state_ind) {
                       case 0:
                         show = !show;
                         if(!show) ++index;
-      
+
                         if(index == widget.players.length){ // every player has gotten their role by now
                           start_game = true;
 
@@ -160,16 +159,14 @@ class GameLogicState extends State<GameLogic> {
 
                           // make sure the asker and answerer are not the same person 
                           if(answerer_ind == asker_ind) answerer_ind = (answerer_ind + 1) % widget.players.length;
-      
+
                           start_index = (asker_ind -1) % widget.players.length;
-                          debugPrint("start_index: $start_index");
-                          
-      
+
                           state_ind = 1;
                         }
-      
+
                         break;
-      
+
                       case 1:
                         //! TODO: for future self: implement multiple algorithms for choosing the asker and answerer and pick one at random
                         {
@@ -184,7 +181,7 @@ class GameLogicState extends State<GameLogic> {
                         }
 
                         break;
-      
+
                       case 2:
                         Navigator.of(context).push(
                           PageRouteBuilder(
@@ -210,13 +207,13 @@ class GameLogicState extends State<GameLogic> {
                             ),
                           )
                         );
-      
+
                         break;
-      
+
                       default:
                     }
-      
-                  }), 
+
+                  }),
                 ),
               )
             ],

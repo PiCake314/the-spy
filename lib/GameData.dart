@@ -13,5 +13,10 @@ class GameInfo{
   String topic;
   List<String> topic_list;
 
-  GameInfo({this.spy = "", this.players = const [], this.topic = "", this.topic_list = const []})
+  GameInfo({
+    this.spy = "",
+    this.players = const [],
+    this.topic = "",
+    this.topic_list = const [],
+  });
 }

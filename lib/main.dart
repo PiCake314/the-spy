@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thespy/Components/TitleButton.dart';
 import 'package:thespy/Pages/GameOptionsPage.dart';
-import 'package:thespy/Pages/GamePage.dart';
 import 'package:thespy/Pages/SettingsPage.dart';
+
 
 void main() {
   runApp(const MyApp());

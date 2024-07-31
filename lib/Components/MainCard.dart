@@ -86,8 +86,6 @@ class MainCard extends StatelessWidget {
                     final Map<String, dynamic> data =
                         data_string != null ? jsonDecode(data_string) : {};
 
-                    debugPrint(data_string);
-
                     data["options"]
                         .removeAt(data["titles"].indexOf(game_data.title));
                     data["titles"].remove(game_data.title);
@@ -95,7 +93,6 @@ class MainCard extends StatelessWidget {
 
                     await prefs.setString("data", jsonEncode(data));
 
-                    debugPrint(data.toString());
                     callback();
                     if (context.mounted) Navigator.of(context).pop();
                   },

@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+import 'package:thespy/GameData.dart';
+import 'package:thespy/SharedData.dart';
+
+class ResultsPage extends StatelessWidget {
+  final GameInfo game_info;
+  final List<String> votes;
+  final String spy_vote;
+
+  const ResultsPage({
+    super.key,
+    required this.game_info,
+    required this.votes,
+    required this.spy_vote
+  });
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    for(int i = 0; i < game_info.players.length; ++i){
+      final name = game_info.players[i];
+
+      scores[name] ??= 0;
+
+      if(votes[i] == game_info.spy) // players vote for a spy
+          scores[name] = scores[name] !+ 100;
+    }
+
+    if(spy_vote == game_info.topic) // spy votes for a topic
+      scores[game_info.spy] = scores[game_info.spy] !+ 100;
+
+
+    return Scaffold(
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 150),
+            child: Text("Results!", style: TextStyle(fontSize: 48)),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: game_info.players.length,
+              itemBuilder: (_, idx){
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(game_info.players[idx], style: const TextStyle(fontSize: 24)),
+                      Text(scores[game_info.players[idx]].toString(), style: const TextStyle(fontSize: 24),)
+                    ],
+                  ),
+                );
+              }
+            )
+          ),
+        ],
+      ),
+    );
+  }
+}
