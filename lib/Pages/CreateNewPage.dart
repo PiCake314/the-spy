@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thespy/Components/OptionInput.dart';
+import 'package:thespy/SharedData.dart';
 
 class CreateNew extends StatefulWidget {
   final bool modifying;
@@ -22,14 +23,6 @@ class _CreateNewState extends State<CreateNew> {
 
   Map<String, dynamic> data = {};
 
-  void errMsg(final String label) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(label),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -42,7 +35,7 @@ class _CreateNewState extends State<CreateNew> {
       title_controller.text = widget.title;
       option_controllers = widget.topics.map((e) => TextEditingController(text: e)).toList();
     } else {
-      option_controllers = List.generate(3, (index) => TextEditingController());
+      option_controllers = List.generate(3, (index) => TextEditingController(), growable: true);
     }
 
   }
@@ -135,13 +128,13 @@ class _CreateNewState extends State<CreateNew> {
                         if (title_controller.text.trim().isEmpty ||
                             option_controllers
                                 .any((element) => element.text.isEmpty))
-                          return errMsg("Please fill-in all the fields.");
+                          return errMsg(context, "Please fill-in all the fields.");
 
                         if (option_controllers.map((e) => e.text.trim().toUpperCase()).toSet().length != option_controllers.length)
-                          return errMsg("Options must be unique.");
+                          return errMsg(context, "Options must be unique.");
 
                         if (title_controller.text.trim().length > 10)
-                          return errMsg("Category name too long.");
+                          return errMsg(context, "Category name too long.");
 
                         final prefs = await SharedPreferences.getInstance();
 
@@ -153,17 +146,18 @@ class _CreateNewState extends State<CreateNew> {
 
                         // store the data
                         data["titles"] ??= [];
-
-                        final int index = data["titles"].indexOf(widget.title);
-
-                        data["titles"][index] = title_controller.text.trim().toUpperCase();
-
                         data["options"] ??= [];
-                        data["options"][index] = option_controllers.map((e) => e.text.trim().toUpperCase()).toList();
-                        // data["options"].add(
-                        //     option_controllers.map((e) => e.text.trim().toUpperCase())
-                        //     .toList(),
-                        // );
+
+                        if(widget.modifying){
+                          final int index = data["titles"].indexOf(widget.title);
+                          data["titles"][index] = title_controller.text.trim().toUpperCase();
+                          data["options"][index] = option_controllers.map((e) => e.text.trim().toUpperCase()).toList();
+                        }
+                        else{
+                          data["titles"].add(title_controller.text.trim().toUpperCase());
+                          data["options"].add(option_controllers.map((e) => e.text.trim().toUpperCase()).toList());
+                        }
+
 
                         final value = jsonEncode(data);
                         prefs.setString("data", value);
