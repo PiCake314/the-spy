@@ -2,7 +2,25 @@
 
 import 'package:flutter/material.dart';
 
+
+class Pair<T1, T2>{
+  T1 first;
+  T2 second;
+
+  Pair(this.first, this.second);
+}
+
 Map<String, int> scores = {};
+
+
+void errMsg(BuildContext context, final String label) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(label),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
+}
 
 
 void showExitModal(BuildContext context) {

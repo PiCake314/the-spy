@@ -13,11 +13,15 @@ class TitleButton extends StatelessWidget {
       child: ElevatedButton(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 25),
+            style: TextStyle(
+              color: Colors.grey.shade300,
+              fontSize: 25,
+            ),
           ),
           style: ButtonStyle(
-            // backgroundColor: WidgetStateProperty.all(Colors.orange.shade400),
-            foregroundColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
+            // backgroundColor: const WidgetStatePropertyAll(Colors.grey.shade900),
+            backgroundColor: const WidgetStatePropertyAll(Color(0xFF3A4454)),
+            foregroundColor: WidgetStatePropertyAll(Theme.of(context).primaryColor),
             minimumSize: WidgetStateProperty.all(const Size(300, 80)),
             // maximumSize: WidgetStateProperty.all(const Size(300, 80)),
           ),

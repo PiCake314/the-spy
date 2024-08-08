@@ -30,6 +30,12 @@ class ResultsPage extends StatelessWidget {
     if(spy_vote == game_info.topic) // spy votes for a topic
       scores[game_info.spy] = scores[game_info.spy] !+ 100;
 
+    final sorted_scores = Map.fromEntries(
+      scores.entries.toList()..sort((e1, e2) => -e1.value.compareTo(e2.value)),
+    );
+
+    final List<Pair<String, int>> sorted_scores_list =
+      sorted_scores.entries.map((e) => Pair(e.key, e.value)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -48,15 +54,15 @@ class ResultsPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: game_info.players.length,
+              itemCount: sorted_scores_list.length,
               itemBuilder: (_, idx){
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(game_info.players[idx], style: const TextStyle(fontSize: 24)),
-                      Text(scores[game_info.players[idx]].toString(), style: const TextStyle(fontSize: 24),)
+                      Text(sorted_scores_list[idx].first, style: const TextStyle(fontSize: 24)),
+                      Text(sorted_scores_list[idx].second.toString(), style: const TextStyle(fontSize: 24))
                     ],
                   ),
                 );

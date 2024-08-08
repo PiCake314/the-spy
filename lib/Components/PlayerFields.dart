@@ -23,9 +23,7 @@ class _PlayerFieldsState extends State<PlayerFields> {
               hint: "Player",
               index: index,
               controller: widget.player_controllers[index],
-              callback: () => setState(() {
-                widget.player_controllers.removeAt(index);
-              }),
+              callback: () => setState(() => widget.player_controllers.removeAt(index)),
             );
           }
           else{
@@ -35,14 +33,9 @@ class _PlayerFieldsState extends State<PlayerFields> {
                 SizedBox(
                   width: 70, // 20 plus button width
                   child: IconButton(
-                    icon: const Icon(Icons.add_circle_outline_sharp, size: 50,),
-                    style: ButtonStyle(
-                      foregroundColor: WidgetStateProperty.all(
-                        Theme.of(context).primaryColor),
-                    ),
-                    onPressed: () => setState(() {
-                      widget.player_controllers.add(TextEditingController());
-                    }),
+                    icon: const Icon(Icons.add_circle_outline_sharp, size: 50),
+                    style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(Theme.of(context).primaryColor)),
+                    onPressed: () => setState(() => widget.player_controllers.add(TextEditingController())),
                   ),
                 ),
               ],
