@@ -68,7 +68,7 @@ class _GameSelectionPageState extends State<GameSelectionPage> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 padding: const WidgetStatePropertyAll(EdgeInsets.all(5)),
-                                backgroundColor: const WidgetStatePropertyAll(Color(0xFF3a4454)),
+                                backgroundColor: const WidgetStatePropertyAll(Color(0xFF3A4454)),
                                 foregroundColor: WidgetStatePropertyAll(
                                     Theme.of(context).primaryColor),
                                 shape: WidgetStatePropertyAll(

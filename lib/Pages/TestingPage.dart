@@ -60,7 +60,7 @@ class _TestingPageState extends State<TestingPage> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 100),
-          child: Text("Okay Mr. ${widget.game_info.spy}", style: const TextStyle(fontSize: 32)),
+          child: Text("Okay Mr. ${widget.game_info.spy}\nWhat was the topic?", style: const TextStyle(fontSize: 32), textAlign: TextAlign.center),
         ),
 
         Expanded(
@@ -71,7 +71,7 @@ class _TestingPageState extends State<TestingPage> {
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * .08,
                 child: ElevatedButton(
-                  child: Text(choices[idx], style: const TextStyle(fontSize: 28)),
+                  child: Text(choices[idx], style: const TextStyle(fontSize: 28,)),
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
                       colors[idx]

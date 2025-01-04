@@ -141,7 +141,7 @@ class _CreateNewState extends State<CreateNew> {
 
                   data = data_string != null
                       ? Map<String, dynamic>.from(jsonDecode(data_string))
-                      : <String, Object>{};
+                      : <String, dynamic>{};
 
                   // store the data
                   data["titles"] ??= [];
@@ -153,6 +153,7 @@ class _CreateNewState extends State<CreateNew> {
                     data["options"][index] = option_controllers.map((e) => e.text.trim().toUpperCase()).toList();
                   }
                   else{
+                    // they should have the same index indicating the same category
                     data["titles"].add(title_controller.text.trim().toUpperCase());
                     data["options"].add(option_controllers.map((e) => e.text.trim().toUpperCase()).toList());
                   }
