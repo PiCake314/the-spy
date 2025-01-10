@@ -32,8 +32,7 @@ void main() async {
     data["titles"] = titles;
     data["options"] = options;
 
-    final value = jsonEncode(data);
-    prefs.setString("data", value);
+    prefs.setString("data", jsonEncode(data));
   }
 
   runApp(const MyApp());
