@@ -10,6 +10,8 @@ import 'package:thespy/Pages/GameSelectionPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
+  // basically, if no categories exists, create some
   final prefs = await SharedPreferences.getInstance();
   final data_string = prefs.getString("data");
   final data = data_string != null
