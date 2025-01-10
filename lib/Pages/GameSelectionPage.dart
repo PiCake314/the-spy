@@ -234,6 +234,7 @@ Widget button(
   onPressed: () => Navigator.of(context).push(
     MaterialPageRoute(builder: (_) => PlayersPage(
       title: game_data.title,
+      //! TODO: Fix randomess
       topic: game_data.topic_list[Random().nextInt(game_data.topic_list.length)],
       topic_list: game_data.topic_list,
     )),

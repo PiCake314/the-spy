@@ -15,9 +15,9 @@ void main() async {
   final data = data_string != null
     ? Map<String, dynamic>.from(jsonDecode(data_string))
     : <String, dynamic>{};
-  
+
   debugPrint(data.toString());
-  
+
   if(!data.containsKey("titles") || (data["titles"] as List).isEmpty) {
     // typically all these should be uppercase but it seems to be working fine so.. :)
     const titles = ["Animals", "Clothes", "Fruits"];
