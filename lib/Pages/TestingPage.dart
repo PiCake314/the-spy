@@ -78,23 +78,27 @@ class _TestingPageState extends State<TestingPage> {
                     )
                   ),
                   onPressed: () async {
-                    if(chosen) return; chosen = true;
+                    if(chosen) return; chosen = true; // avoids double clicks
 
 
-                    if(choices[idx] == widget.game_info.topic)
+                    if(choices[idx] == widget.game_info.topic) // he got it right
                       setState(() => colors[idx] = Colors.green.shade300);
-                    else{
-                      setState(() => colors[idx] = Colors.red);
+                    else{ // Wrong! Time to do some flashing animation
+                      setState(() => colors[idx] = Colors.red); // THE TOP
 
-                      for(int i = 0; i < colors.length; ++i)
+                      for(int i = 0; i < colors.length; ++i) // find the correct answer and light it green
                         if(choices[i] == widget.game_info.topic)
                           setState(() => colors[i] = Colors.green.shade300);
-                      
+
+
+
+                      // flash the wrong answer red 3 times.
+                      // Once at THE TOP, and twice here
                       for(int i = 0; i < 2; ++i){
                         await Future.delayed(const Duration(milliseconds: 250),
                           () => setState(() => colors[idx] = Colors.white),
                         );
-                        
+
                         await Future.delayed(const Duration(milliseconds: 250),
                           () => setState(() => colors[idx] = Colors.red),
                         );
@@ -102,7 +106,7 @@ class _TestingPageState extends State<TestingPage> {
                     }
 
                     await Future.delayed(const Duration(milliseconds: 1000))
-                    .then((_) => Navigator.of(context).push(PageRouteBuilder(
+                    .then((_) => !context.mounted ? null : Navigator.of(context).push(PageRouteBuilder(
                       transitionsBuilder: (_, animation, __, child) {
                         const begin = 0.0;
                         const end = 1.0;
