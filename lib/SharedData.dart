@@ -14,6 +14,7 @@ Map<String, int> scores = {};
 
 
 void errMsg(BuildContext context, final String label) {
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(label),
