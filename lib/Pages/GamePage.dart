@@ -29,13 +29,13 @@ class GameLogicState extends State<GameLogic> {
 
   // late List<String> askers = widget.players.toList(); // copies the list
   // late List<String> answerers = [...widget.players]; // also copies the list
-  int asker_ind = -1;
+  int asker_index = -1;
   // String asker = "";
-  int answerer_ind = -1;
+  int answerer_index = -1;
   // String answerer = "";
   late int start_index;
 
-  int state_ind = 0;
+  int state_index = 0;
 
 
 
@@ -121,12 +121,12 @@ class GameLogicState extends State<GameLogic> {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: widget.players[asker_ind],
+                          text: widget.players[asker_index],
                             style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                           ),
                         const TextSpan(text: ", ask "),
 
-                        TextSpan(text: widget.players[answerer_ind],
+                        TextSpan(text: widget.players[answerer_index],
                           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
 
@@ -155,7 +155,7 @@ class GameLogicState extends State<GameLogic> {
 
                   onPressed: () => setState(() {
 
-                    switch (state_ind) {
+                    switch (state_index) {
                       case 0:
                         show = !show;
                         if(!show) ++index;
@@ -164,15 +164,15 @@ class GameLogicState extends State<GameLogic> {
                           start_game = true;
 
                           // setting the initial asker and answerer
-                          asker_ind = Random().nextInt(widget.players.length);
-                          answerer_ind = Random().nextInt(widget.players.length);
+                          asker_index = Random().nextInt(widget.players.length);
+                          answerer_index = Random().nextInt(widget.players.length);
 
                           // make sure the asker and answerer are not the same person 
-                          if(answerer_ind == asker_ind) answerer_ind = (answerer_ind + 1) % widget.players.length;
+                          if(answerer_index == asker_index) answerer_index = (answerer_index + 1) % widget.players.length;
 
-                          start_index = (asker_ind -1) % widget.players.length;
+                          start_index = (asker_index -1) % widget.players.length;
 
-                          state_ind = 1;
+                          state_index = 1;
                         }
 
                         break;
@@ -180,14 +180,14 @@ class GameLogicState extends State<GameLogic> {
                       case 1:
                         //! TODO: for future self: implement multiple algorithms for choosing the asker and answerer and pick one at random
                         {
-                          ++asker_ind;
-                          asker_ind %= widget.players.length;
+                          ++asker_index;
+                          asker_index %= widget.players.length;
 
-                          ++answerer_ind;
-                          answerer_ind %= widget.players.length;
+                          ++answerer_index;
+                          answerer_index %= widget.players.length;
 
                           // indicates to move to voting page after next click
-                          if(asker_ind == start_index) state_ind = 2;
+                          if(asker_index == start_index) state_index = 2;
                         }
 
                         break;
